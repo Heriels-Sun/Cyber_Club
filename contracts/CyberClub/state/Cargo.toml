@@ -1,0 +1,14 @@
+[package]
+name = "cyberclub-state"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gmeta = {  git = "https://github.com/gear-tech/gear.git", tag = "v1.0.2", features = ["codegen"] }
+gstd = { git = "https://github.com/gear-tech/gear.git", tag = "v1.0.2" }
+parity-scale-codec = { version = "3", default-features = false }
+scale-info = { version = "2", default-features = false }
+cyberclub-io = { path = "../io" }
+
+[build-dependencies]
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", tag = "v1.0.2", features = ["metawasm", "wasm-opt"] }
