@@ -3,7 +3,7 @@ import { Flex, Button, Image, Box } from '@chakra-ui/react';
 import { ButtonPlay } from './buttonPlay';
 import { ChargingPage } from './ChargingPage';
 import { NewWindow1 } from './newWindow1';
-import { ReadState } from 'pages/conection/ReadState';
+import { ReadState } from '../conection/ReadState';
 
 function Home() {
   const [showWindow, setShowContent] = useState(true);
