@@ -30,8 +30,8 @@ ___
 <a href="https://www.instagram.com/stevevalt?igshid=OGQ5ZDc2ODk2ZA==">
 - Steve 🖼️</a></br>
 
-<a href="https://github.com/Heriels-Sun">
-- David Isaac 🌐</a></br>
+<a href="https://github.com/TakagIs">
+- Isaac David Arroyo Mora 🌐</a></br>
 <!-- Also, we have a website were you can see the UI of this proyect 🌐 -->
 
 <!-- <a style="color: #ffff00; font-size: 28px; text-decoration: none;" href="">
