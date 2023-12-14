@@ -1,5 +1,10 @@
-use cyberclub_io::ProgramMetadata;
 
-fn main() {
-    gear_wasm_builder::build_with_metadata::<ProgramMetadata>();
+use io::ProgramMetadata;
+use gear_wasm_builder::WasmBuilder;
+use gmeta::Metadata;
+
+
+fn main(){
+
+   WasmBuilder::with_meta(ProgramMetadata::repr()).exclude_features(vec!["binary-vendor"]).build();
 }
