@@ -3,22 +3,29 @@ import { useState, useEffect } from 'react';
 
 type Props = {
   helpText: string;
+  start: boolean;
 };
 
-function HeaderGame({ helpText }: Props) {
+function HeaderGame({ helpText, start }: Props) {
     const [time, setTime] = useState({ minutes: 0, seconds: 0 });
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        let interval: NodeJS.Timeout;
+    
+        if (start) {
+          interval = setInterval(() => {
             setTime(prevTime => ({
-                ...prevTime,
-                minutes: prevTime.minutes + Math.floor((prevTime.seconds + 1) / 60),
-                seconds: (prevTime.seconds + 1) % 60,
+              ...prevTime,
+              minutes: prevTime.minutes + Math.floor((prevTime.seconds + 1) / 60),
+              seconds: (prevTime.seconds + 1) % 60,
             }));
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
+          }, 1000);
+        }
+    
+        return () => {
+          if (interval) clearInterval(interval);
+        };
+      }, [start]);
 
     return (
         <Box as="header" py="4" px="6" borderBottom="1px" borderColor="white">

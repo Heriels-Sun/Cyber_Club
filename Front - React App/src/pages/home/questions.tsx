@@ -1,107 +1,56 @@
-import { Box, Text, Button } from '@chakra-ui/react';
+import { Box, Text, Button, Center } from '@chakra-ui/react';
 import { useState } from 'react';
 import { HeaderGame } from './HeaderGame';
-import { IndividualQuestion } from './individualQuestion';
+import { IndividualQuestion } from './individualQuestion1';
+import { GeneralQuestion } from './questions1';
+import { HeaderGeneral } from './HeaderGeneral';
 
-type Question = {
-  id: string;
-  text: string;
+type QuestionsProps= {
+  module: string;
 };
 
-function Questions() {
-  const questions: Question[] = [
-    { id: '1', text: '¿Qué es una blockchain?' },
-    { id: '2', text: '¿Cuál es el propósito principal de la tecnología blockchain?' },
-    { id: '3', text: 'Menciona un ejemplo de uso de la blockchain aparte de las criptomonedas.' },
-    { id: '4', text: '¿Qué es una criptomoneda?' },
-    { id: '5', text: 'Nombra una criptomoneda que no sea Bitcoin.' },
-    { id: '6', text: '¿Cómo se realizan las transacciones con criptomonedas?' },
-    { id: '7', text: '¿Cuál es la diferencia entre una blockchain pública y una privada?' },
-    { id: '8', text: '¿Quién puede unirse a una blockchain pública?' },
-    { id: '9', text: '¿En qué situaciones se podría preferir usar una blockchain privada?' },
-    { id: '10', text: '¿Qué hace seguras a las transacciones en blockchain?' },
-    { id: '11', text: '¿Qué es la encriptación en el contexto de blockchain?' },
-    { id: '12', text: '¿Cómo contribuye la descentralización a la seguridad de la blockchain?' },
-    { id: '13', text: 'Principios Básicos de las Transacciones en Blockchain' },
-    { id: '14', text: '¿Cómo se añade un nuevo bloque a la blockchain?' },
-    { id: '15', text: '¿Qué es un "hash" en blockchain y por qué es importante?' },
-  ];
-
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
+function Questions({module}: QuestionsProps) {
+  const [componentRender, setComponentRender] = useState<React.ReactNode | null>(null);
+  const [start1, setStart] = useState(true);
   
-  const handleSubmit = () => {
-    const unansweredQuestions = questions.filter(question => !selectedOptions[question.id]);
-    
-    if (unansweredQuestions.length > 0) {
-      // Obtén los textos de las preguntas no respondidas
-      const unansweredTexts = unansweredQuestions.map(question => `Pregunta ${question.id}: ${question.text}`);
-      
-      // Crea un mensaje de alerta con las preguntas no respondidas
-      alert(`Te falta responder las siguientes preguntas:\n${unansweredTexts.join('\n')}`);
-    } else {
-      console.log(selectedOptions); // Aquí puedes enviar las respuestas
+  const startGame = (value: boolean) => {
+    setStart(value);
+    if(start1){
+      setComponentRender(
+          <GeneralQuestion/>
+      );
     }
   };
-
-  const updateAnswer = (questionId: string, answer: string) => {
-    setSelectedOptions({
-      ...selectedOptions,
-      [questionId]: answer,
-    });
-  };
-
-  const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      handleSubmit();
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    }
-  };
-
-  const currentQues = questions[currentQuestion];
 
   return (
     <>
-      {/* ... Tu código de HeaderGame y Box */}
-      <Box>
-        <HeaderGame helpText="Select the correct option and use the next button to advance."/>
-
-        {currentQues && (
-        <IndividualQuestion
-          key={currentQues.id}
-          text={currentQues.text}
-          questionId={currentQues.id}
-          updateAnswer={updateAnswer}
-          selectedAnswer={selectedOptions[currentQues.id] || ''} // Proporcionar la opción seleccionada
-        />
+      {componentRender}
+        {start1 && (
+          <>
+            <HeaderGeneral helpText={module}/>
+            <Box
+            ml="5%"
+            mt="2%"
+            w="90%"
+            h="48vh"
+            alignItems="center"
+            background="#4A5B91"
+            >
+              <Text fontSize='25px' textAlign="center" fontWeight="semibold" color="white"><br/></Text>
+              <Text fontSize='8xl' textAlign="center" fontWeight="semibold" color="white">Instructions</Text>
+              <Text ml="10%" w="80%" fontSize='20px' textAlign="justify" fontWeight="semibold" color="white"><br/>
+                Answer the following questions choosing one of the 4 options shown,&nbsp;
+                <Text as="span" color="yellow">when you press the start button, the time will start running</Text>,
+                If you answer the question correctly in 1 second or less, you will get the 100 points, if you take more time to answer, the points will decrease. 
+                points will decrease. You will have 3 attempts per day to answer one or more modules, passing attempts also count, 
+                after that you will have to wait 24 hours. Good luck!
+              </Text>
+            </Box>
+            <Button background="yellow" color="black" mt="2%" ml="40%" w="20%" onClick={() => startGame(!start1)}>
+              START
+            </Button>
+          </>
       )}
-
-        <Box display="flex" justifyContent="right" mt="-1%">
-          <Button
-            disabled={currentQuestion === 0}
-            mr="1vh"
-            onClick={handlePrevious}
-            colorScheme="blue"
-          >
-            Previous
-          </Button>
-
-          <Button
-            mr="4vh"
-            onClick={handleNext}
-            colorScheme="blue"
-          >
-            {currentQuestion === questions.length - 1 ? 'Submit' : 'Next'}
-          </Button>
-        </Box>
-      </Box>
     </>
   );
 }

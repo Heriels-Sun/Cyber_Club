@@ -10,8 +10,8 @@ function HeaderGeneral({ helpText }: Props) {
     return (
         <Box as="header" py="4" px="6" borderBottom="1px" borderColor="white">
         <Flex justify="space-between" align="center">
-            <Flex display="flex" alignItems="center">
-                <Text color='white' mr="4">{helpText}</Text>
+            <Flex display="flex" alignItems="center" w="100%">
+                <Text ml="3.2%" color='white' mr="4" fontWeight="semibold">{helpText}</Text>
             </Flex>
         </Flex>
         </Box>

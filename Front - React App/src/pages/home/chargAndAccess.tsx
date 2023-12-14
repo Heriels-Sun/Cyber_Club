@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Flex, Progress, extendTheme } from '@chakra-ui/react';
+import { Flex, Progress } from '@chakra-ui/react';
 import { NewWindow1 } from "./newWindow1";
 
 function ChargingPageAndAccess() {
@@ -31,7 +31,7 @@ function ChargingPageAndAccess() {
                 height="calc(100vh - 120px)"
                 overflow="hidden"
             >
-                <Progress w="10%" h="2%" max={100} value={progressValue} colorScheme="teal"/>
+                <Progress w="15%" h="2%" max={100} value={progressValue} colorScheme="purple"/>
             </Flex>
         ) : (
             <NewWindow1 />

@@ -6,7 +6,7 @@ type Props = {
 
 function Perfil({ state }: Props) {
     return (
-        <HeaderGame helpText="Select the correct answer to the question" />
+        <HeaderGame helpText="Select the correct answer to the question" start={false}/>
     );
 }
 

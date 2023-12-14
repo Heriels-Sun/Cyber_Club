@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Flex, Button, Image, Box } from '@chakra-ui/react';
+import { ReadState } from 'pages/conection/ReadState';
 import { ButtonPlay } from './buttonPlay';
 import { ChargingPage } from './ChargingPage';
-import { NewWindow1 } from './newWindow1';
-import { ReadState } from '../conection/ReadState';
 
 function Home() {
   const [showWindow, setShowContent] = useState(true);
@@ -13,10 +12,9 @@ function Home() {
     setShowContent(newValue); // Cambiar el estado para ocultar el contenido
   };
 
-
   return (
     <>
-    <ReadState/>
+    {/* <ReadState/> */}
     {showWindow && (
     <Flex position="relative" alignItems="center">
       <Image
