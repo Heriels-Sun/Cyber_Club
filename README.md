@@ -21,16 +21,16 @@ Cyber Club V0.2.2 🔗</a></br>
 ___
 
 ### Our team:
-<a href="https://idea.gear-tech.io/programs/0xe69727180e6a43860f5195c7023052766baad4938400f44e6be709a89e5f087f?node=wss%3A%2F%2Ftestnet.vara-network.io">
+<a href="https://github.com/Heriels-Sun">
 - Oscar Uriel Hernández Sánchez 💻</a></br>
 
-<a href="https://idea.gear-tech.io/programs/0xe69727180e6a43860f5195c7023052766baad4938400f44e6be709a89e5f087f?node=wss%3A%2F%2Ftestnet.vara-network.io">
+<a href="https://github.com/inden65">
 - Benito Pacheco Vazquez 💻</a></br>
 
-<a href="https://idea.gear-tech.io/programs/0xe69727180e6a43860f5195c7023052766baad4938400f44e6be709a89e5f087f?node=wss%3A%2F%2Ftestnet.vara-network.io">
+<a href="https://www.instagram.com/stevevalt?igshid=OGQ5ZDc2ODk2ZA==">
 - Steve 🖼️</a></br>
 
-<a href="https://idea.gear-tech.io/programs/0xe69727180e6a43860f5195c7023052766baad4938400f44e6be709a89e5f087f?node=wss%3A%2F%2Ftestnet.vara-network.io">
+<a href="https://github.com/Heriels-Sun">
 - David Isaac 🌐</a></br>
 <!-- Also, we have a website were you can see the UI of this proyect 🌐 -->
 
