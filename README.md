@@ -1,7 +1,7 @@
 <!-- Description starts here -->
-
-![Cyber Club portada]("Front - React App\public\fondo1.png")
-
+<div>
+  <img src="./Front - React App/public/fondo1.png" width = "100%">
+</div>
 ___
 
 ### Welcome to Cyber Club!
