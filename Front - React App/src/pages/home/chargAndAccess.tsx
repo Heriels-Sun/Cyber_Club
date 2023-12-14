@@ -12,7 +12,7 @@ function ChargingPageAndAccess() {
             const interval = setInterval(() => {
                 if (currentValue <= 100) {
                     setProgressValue(currentValue);
-                    currentValue += 1.8;
+                    currentValue += 10;
                 } else {
                     clearInterval(interval);
                     setIsLoadingComplete(true); // Marca la carga como completa

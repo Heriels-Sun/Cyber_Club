@@ -84,60 +84,60 @@ function IndividualQuestion({ questionId, text, updateAnswer, selectedAnswer }: 
         <RadioGroup defaultValue="" mt="2vh" color="white">
           <HStack spacing="50px" mb="2vh">
             <Button whiteSpace="pre-line"
-              backgroundColor={selectedAnswer === 'Option 1' ? '#2C7A7B' : '#4A5B91'}
+              backgroundColor={selectedAnswer === '1' ? '#2C7A7B' : '#4A5B91'}
               w="63.9vh"
               h="11vh"
               borderRadius="md"
               textAlign="center"
               paddingLeft="20px"
               fontSize="16px"
-              color={selectedAnswer === 'Option 1' ? '#CCC' : 'white'}
+              color={selectedAnswer === '1' ? '#CCC' : 'white'}
               _hover={{ backgroundColor: '#2C7A7B', color: '#CCC' }}
-              onClick={() => handleSelectAnswer('Option 1')}
+              onClick={() => handleSelectAnswer('1')}
             >
               {insertLineBreaks(allAnswers[parseInt(questionId, 10) - 1].textAnswer1, 50)}
             </Button>
             <Button whiteSpace="pre-line"
-              backgroundColor={selectedAnswer === 'Option 2' ? '#2C7A7B' : '#4A5B91'}
+              backgroundColor={selectedAnswer === '2' ? '#2C7A7B' : '#4A5B91'}
               w="63.9vh"
               h="11vh"
               borderRadius="md"
               textAlign="center"
               paddingLeft="20px"
               fontSize="16px"
-              color={selectedAnswer === 'Option 2' ? '#CCC' : 'white'}
+              color={selectedAnswer === '2' ? '#CCC' : 'white'}
               _hover={{ backgroundColor: '#2C7A7B', color: '#CCC' }}
-              onClick={() => handleSelectAnswer('Option 2')}
+              onClick={() => handleSelectAnswer('2')}
             >
               {insertLineBreaks(allAnswers[parseInt(questionId, 10) - 1].textAnswer2, 50)}
             </Button>
           </HStack>
           <HStack spacing="50px">
             <Button whiteSpace="pre-line"
-              backgroundColor={selectedAnswer === 'Option 3' ? '#2C7A7B' : '#4A5B91'}
+              backgroundColor={selectedAnswer === '3' ? '#2C7A7B' : '#4A5B91'}
               w="63.9vh"
               h="11vh"
               borderRadius="md"
               textAlign="center"
               paddingLeft="20px"
               fontSize="16px"
-              color={selectedAnswer === 'Option 3' ? '#CCC' : 'white'}
+              color={selectedAnswer === '3' ? '#CCC' : 'white'}
               _hover={{ backgroundColor: '#2C7A7B', color: '#CCC' }}
-              onClick={() => handleSelectAnswer('Option 3')}
+              onClick={() => handleSelectAnswer('3')}
             >
               {insertLineBreaks(allAnswers[parseInt(questionId, 10) - 1].textAnswer3, 50)}
             </Button>
             <Button whiteSpace="pre-line"
-              backgroundColor={selectedAnswer === 'Option 4' ? '#2C7A7B' : '#4A5B91'}
+              backgroundColor={selectedAnswer === '4' ? '#2C7A7B' : '#4A5B91'}
               w="63.9vh"
               h="11vh"
               borderRadius="md"
               textAlign="center"
               paddingLeft="20px"
               fontSize="16px"
-              color={selectedAnswer === 'Option 4' ? '#CCC' : 'white'}
+              color={selectedAnswer === '4' ? '#CCC' : 'white'}
               _hover={{ backgroundColor: '#2C7A7B', color: '#CCC' }}
-              onClick={() => handleSelectAnswer('Option 4')}
+              onClick={() => handleSelectAnswer('4')}
             >
               {insertLineBreaks(allAnswers[parseInt(questionId, 10) - 1].textAnswer4, 50)}
             </Button>

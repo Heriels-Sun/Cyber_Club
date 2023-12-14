@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 type Props = {
   helpText: string;
   start: boolean;
+  stopTimer: () => void;
+  onStopTimer: (time: { minutes: number; seconds: number }) => void;
 };
 
-function HeaderGame({ helpText, start }: Props) {
+function HeaderGame({ helpText, start, stopTimer, onStopTimer }: Props) {
     const [time, setTime] = useState({ minutes: 0, seconds: 0 });
 
     useEffect(() => {
@@ -23,9 +25,12 @@ function HeaderGame({ helpText, start }: Props) {
         }
     
         return () => {
-          if (interval) clearInterval(interval);
+          if (interval){
+            clearInterval(interval);
+            onStopTimer(time);
+          }
         };
-      }, [start]);
+      }, [start, onStopTimer, time]);
 
     return (
         <Box as="header" py="4" px="6" borderBottom="1px" borderColor="white">

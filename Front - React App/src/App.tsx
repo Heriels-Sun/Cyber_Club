@@ -12,7 +12,7 @@ function Component() {
 
   return (
     <>
-      <Header isAccountVisible={isAccountReady} />
+      <Header isAccountVisible={isAccountReady} points={10} />
       <main>{isAppReady ? <Routing /> : <ApiLoader />}</main>
       
     </>

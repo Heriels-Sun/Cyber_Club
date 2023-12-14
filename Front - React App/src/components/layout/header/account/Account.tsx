@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAccount } from '@gear-js/react-hooks';
 import { AccountsModal } from './accounts-modal';
 import { Wallet } from './wallet';
+import { CyberPoints } from '../cyberPoints';
 
 function Account() {
   const { account, accounts } = useAccount();

@@ -7,9 +7,10 @@ import { HeaderGeneral } from './HeaderGeneral';
 
 type QuestionsProps= {
   module: string;
+  numberModule: number;
 };
 
-function Questions({module}: QuestionsProps) {
+function Questions({module, numberModule}: QuestionsProps) {
   const [componentRender, setComponentRender] = useState<React.ReactNode | null>(null);
   const [start1, setStart] = useState(true);
   
@@ -17,7 +18,7 @@ function Questions({module}: QuestionsProps) {
     setStart(value);
     if(start1){
       setComponentRender(
-          <GeneralQuestion/>
+          <GeneralQuestion numberModule={numberModule}/>
       );
     }
   };

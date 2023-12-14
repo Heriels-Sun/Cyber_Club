@@ -15,7 +15,7 @@ function IconoNFT({imageUrl, _key, onChooseNFT }: Props) {
     return (
         <Box textAlign="center">
             <Box mx="auto" maxWidth="200px" mb="10px"> {/* Centrar la imagen */}
-            <Image src={imageUrl} alt="NFT" boxSize="200px" objectFit="cover" />
+            <Image src={imageUrl} boxSize="200px" objectFit="cover" />
             </Box>
             <Button onClick={() => signer(_key)} colorScheme="blue" display="block" mx="auto"> {/* Centrar el botón */}
                 Choose
