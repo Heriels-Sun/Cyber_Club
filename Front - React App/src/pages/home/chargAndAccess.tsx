@@ -1,10 +1,22 @@
 import { useState, useEffect } from "react";
-import { Flex, Progress } from '@chakra-ui/react';
-import { NewWindow1 } from "./newWindow1";
+import { useAccount } from "@gear-js/react-hooks";
+import { AccountsModal } from '../../components/layout/header/account/accounts-modal/AccountsModal';
+import { Flex, Progress, Text } from '@chakra-ui/react';
+import { NewDashboard } from './newDashboard';
 
-function ChargingPageAndAccess() {
-    const [progressValue, setProgressValue] = useState(0);
-    const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+function ChargingPage() {
+    document.body.style.backgroundImage                 = "url('fondo.png')";
+    document.body.style.backgroundAttachment            = "fixed";
+    document.body.style.backgroundSize                  = "cover";
+
+    const [progressValue, setProgressValue]             = useState(0);
+    const [isLoadingComplete, setIsLoadingComplete]     = useState(false);
+    const { accounts, account }                         = useAccount();
+    const [isModalOpen, setIsModalOpen]                 = useState(true);
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+      };
 
     useEffect(() => {
         const simulateProgress = () => {
@@ -12,7 +24,7 @@ function ChargingPageAndAccess() {
             const interval = setInterval(() => {
                 if (currentValue <= 100) {
                     setProgressValue(currentValue);
-                    currentValue += 10;
+                    currentValue += 1.25;
                 } else {
                     clearInterval(interval);
                     setIsLoadingComplete(true); // Marca la carga como completa
@@ -22,6 +34,14 @@ function ChargingPageAndAccess() {
 
         simulateProgress();
     }, []);
+    
+    let contentToRender;
+
+    if (account) {
+        contentToRender = <NewDashboard/>
+    }else {
+        contentToRender = <AccountsModal accounts={accounts} close={closeModal} />;
+    }
 
     return (
         !isLoadingComplete ? (
@@ -31,12 +51,13 @@ function ChargingPageAndAccess() {
                 height="calc(100vh - 120px)"
                 overflow="hidden"
             >
-                <Progress w="15%" h="2%" max={100} value={progressValue} colorScheme="purple"/>
+                <Text>LOADING</Text>
+                <Progress w="80%" h="2%" mt={"-2px"} max={100} value={progressValue} colorScheme="purple"/>
             </Flex>
         ) : (
-            <NewWindow1 />
+            contentToRender
         )
     );
 }
 
-export { ChargingPageAndAccess };
+export { ChargingPage };

@@ -10,6 +10,20 @@
   background:rgba(255, 255, 255, 0); 
 }
 
+@font-face {
+  font-family: 'Nasalization';
+  src: url('./assets/fonts/nasalization-rg.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelSplitter';
+  src: url('./assets/fonts/PixelSplitter.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 main {
   background: rgba(255, 255, 255, 0);
   background-size: 200% 200%;

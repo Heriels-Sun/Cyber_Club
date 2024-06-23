@@ -40,13 +40,7 @@ function Header({ isAccountVisible, points }: Props) {
     <Link to="/">
     <Box as="header" className={styles.header} display="flex" alignItems="center">
       <Image as={Logo} alt="Logo" width="120px" height="25px" />
-      {isAccountVisible && (
-        <>
-          {contentToRender}
-          <Account />
-          {/* Agrega aquí otros componentes que desees mostrar */}
-        </>
-      )}
+      <Account />
     </Box>
     </Link>
   );
