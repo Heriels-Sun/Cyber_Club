@@ -211,6 +211,15 @@ extern "C" fn handle() {
                 .expect("Error modifing the current user module");
             debug!("The struct is : {:?}", my_mut_state);
         },
+        CyberMessageIn::DeleteUser => {
+            let my_mut_state = state_mut();
+            my_mut_state.players.remove(&msg::source());
+
+            msg::reply(CyberMessageOut::UserDeleted, 0)
+                .expect("Error deletring the user");
+            debug!("The struct is : {:?}", my_mut_state);
+
+        },
     }
 }
 
