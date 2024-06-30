@@ -1,6 +1,6 @@
 <!-- Description starts here -->
 <div>
-  <img src="./Front - React App/public/fondo1.png" width = "100%">
+  <img src="./Front - React App/public/fondo.png" width = "100%">
 </div>
 ___
 
