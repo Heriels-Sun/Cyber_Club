@@ -15,6 +15,7 @@ pub enum CyberMessageIn {
     ModifyUserPoints(u64),
     FullRegisterUser(String),
     ModifyUserAttemps(u8),
+    DeleteUser,
     // ============ PROGRESS =================
     AddNewProgress(Level, Module, u8)
 }
@@ -29,6 +30,7 @@ pub enum CyberMessageOut {
     UserPointsModified,
     UserFullRegistered,
     UserAttempsmodified,
+    UserDeleted,
     // ============ GAMES =================
     NewProgressAdded(bool)
 }
