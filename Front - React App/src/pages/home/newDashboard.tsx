@@ -7,6 +7,7 @@ import fondo1 from './fondo01.png';
 import fondo2 from './fondo02.png';
 import fondo3 from './fondo03.png';
 import { useAccount, useAlert, useApi } from '@gear-js/react-hooks';
+import { GeneralQuestion } from './questions1'
 
 function NewDashboard() {
     document.body.style.backgroundColor     = "";
@@ -34,6 +35,10 @@ function NewDashboard() {
         navigate('/selectactivity');  // Función para navegar a la ruta '/main'
     };
 
+    const goToQuestions = () => {
+        navigate(`/generalquestion?vLevel=1`);
+    };
+
     const programIDFT =
     "0xe69727180e6a43860f5195c7023052766baad4938400f44e6be709a89e5f087f";
 
@@ -46,6 +51,7 @@ function NewDashboard() {
     useEffect(() => {
         if (!getStateCalled) {
             const getState = () => {
+                if (!api) return;
                 api.programState
                 .read({ programId: programIDFT, payload: '' }, metadata)
                 .then((result) => {
@@ -82,7 +88,7 @@ function NewDashboard() {
             };
             getState();
         }
-    }, [api.programState, metadata, setFullState, alert, getStateCalled, fullState, account]);
+    }, [api?.programState, metadata, setFullState, alert, getStateCalled, fullState, account]);
 
     return (
         <>
@@ -161,7 +167,7 @@ function NewDashboard() {
                                 fontFamily="Nasalization"
                                 borderRadius="0"
                                 backgroundColor="#f4f756"
-                                onClick={goToMain}
+                                onClick={goToQuestions}
                                 sx={{
                                     clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)'
                                 }}

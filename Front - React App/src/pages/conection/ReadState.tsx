@@ -24,6 +24,8 @@ function ReadState() {
   const metadata = ProgramMetadata.from(meta);
 
   const getState = () => {
+    if (api === undefined) return;
+
     const text = "0x704068341012303b48dbd9e0851515ec6992e2dc2ce61a858db49917e84db321";
     api.programState
       .read({ programId: programIDFT, payload:{

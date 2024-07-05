@@ -1,15 +1,26 @@
 import { useState } from 'react';
-import { useAccount } from '@gear-js/react-hooks';
 import { AccountsModal } from './accounts-modal';
 import { Wallet } from './wallet';
+import { 
+  useApi, 
+  useAccount, 
+  useBalance, 
+  useBalanceFormat 
+} from '@gear-js/react-hooks';
 import { CyberPoints } from '../cyberPoints';
 
 function Account() {
+  const { isApiReady } = useApi();
   const { account, accounts } = useAccount();
+  const { balance } = useBalance(account?.address);
+  const { getFormattedBalance } = useBalanceFormat();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const formattedBalance = isApiReady && balance ? getFormattedBalance(balance) : undefined;
+
+
 
   const openModal = () => {
-    setIsModalOpen(true);
+    setIsModalOpen(false);
   };
 
   const closeModal = () => {
@@ -19,21 +30,10 @@ function Account() {
   return (
     <>
       {account ? (
-        <Wallet balance={account.balance} address={account.address} name={account.meta.name} onClick={openModal} />
+        <Wallet balance={formattedBalance} address={account.address} name={account.meta.name} onClick={openModal} />
       ) : (
-        <button
-        style={{
-          color: 'yellow',
-          backgroundColor: 'black',
-          borderRadius: '5px', // Aquí estableces el radio de los bordes
-          padding: '8px 16px', // Añade relleno para mejorar la apariencia
-          border: '1px solid #ccc' // Agrega un borde para destacar el botón
-        }}
-        type="button"
-        onClick={openModal}
-        >
-        Connect Your Wallet
-        </button>
+        <>
+        </>
       )}
       {isModalOpen && <AccountsModal accounts={accounts} close={closeModal} />}
     </>

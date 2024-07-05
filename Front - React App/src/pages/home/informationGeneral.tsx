@@ -1,8 +1,15 @@
-import { useState } from 'react';
-import { ProgramMetadata } from '@gear-js/api';
+import { useState, useContext } from 'react';
+import { decodeAddress, ProgramMetadata } from '@gear-js/api';
 import { web3FromSource } from "@polkadot/extension-dapp";
 import { useAccount, useApi, useAlert } from "@gear-js/react-hooks";
 import { Box, FormControl, FormLabel, Input, Button, Center, VStack, Heading, Flex } from '@chakra-ui/react';
+import { 
+  useContractUtils,
+  useVoucherUtils
+} from 'hooks';
+import { dAppContext } from 'context/dappContext';
+import { SPONSOR_MNEMONIC, SPONSOR_NAME, MAIN_CONTRACT } from 'consts';
+
 import nft1 from './nft/1.jpg';
 import nft2 from './nft/2.jpg';
 import nft3 from './nft/3.jpg';
@@ -23,6 +30,7 @@ import nft17 from './nft/17.jpg';
 import nft18 from './nft/18.jpg';
 import nft19 from './nft/19.jpg';
 import nft20 from './nft/20.jpg';
+import stadistics from './stadistics.png';
 
 type URLItem = {
   id: string;
@@ -43,11 +51,25 @@ function chunkArray(array: URLItem[], chunkSize: number): URLItem[][] {
 }
 
 function InformationGeneral({id_nft,url_nft}:UrlProps) {
-  const { accounts, account } = useAccount();
-  const { api } = useApi();
-  const alert = useAlert();
-  const [username, setUsername] = useState('');
-  const [twitter, setTwitter] = useState('');
+  document.body.style.backgroundColor     = "";
+  document.body.style.backgroundImage     = "linear-gradient(to bottom, black 60%, #0E0E53 100%)";
+  document.body.style.backgroundRepeat    = "no-repeat";
+  document.body.style.backgroundSize      = "cover";
+
+  const { accounts, account }             = useAccount();
+  const { api }                           = useApi();
+  const alert                             = useAlert();
+  const [username, setUsername]           = useState('');
+  const [twitter, setTwitter]             = useState('');
+  const [selectedItem, setSelectedItem]   = useState<URLItem>({ id: id_nft, url:url_nft}); 
+
+  const { signlessAccount, currentVoucherId } = useContext(dAppContext);
+  const {
+    sendMessageWithSignlessAccount
+  } = useContractUtils();
+  const {
+    checkVoucherForUpdates
+  } = useVoucherUtils(SPONSOR_NAME, SPONSOR_MNEMONIC);
 
   const listaDeUrls = [
     { id: '1', url: nft1 },
@@ -104,6 +126,9 @@ function InformationGeneral({id_nft,url_nft}:UrlProps) {
   const metadata = ProgramMetadata.from(meta);
 
   const signer = async (username:string) => {
+    if (!accounts) return;
+    if (!api) return;
+
       const message: any = {
         destination: programIDFT, // programId
         payload: {FullRegisterUser: username},
@@ -117,56 +142,119 @@ function InformationGeneral({id_nft,url_nft}:UrlProps) {
       );
   
       if (isVisibleAccount) {
+
+        if (!signlessAccount || !currentVoucherId) return;
+
+        try {
+          await checkVoucherForUpdates(
+            decodeAddress(signlessAccount.address),
+            currentVoucherId,
+            2, // dos varas
+            1_200, // una hora
+            2,
+            () => alert.success('Voucher updated'),
+            () => alert.error('Error updating voucher'),
+            () => alert.info('Check for voucher uptdates')
+          );
+        } catch (e) {
+          alert.error('Error while chicking voucher');
+          return;
+        }
+  
+        try {
+          await sendMessageWithSignlessAccount(
+            signlessAccount,
+            MAIN_CONTRACT.programId,
+            currentVoucherId,
+            MAIN_CONTRACT.metadata,
+            {
+
+            },
+            0,
+            () => alert.success('Message was send'),
+            () => alert.error('Error while sending message'),
+            () => alert.info('Message is in block'),
+            () => alert.info('Will send a message')
+          );
+        } catch (e) {
+          alert.error('Error sending message');
+        }
+
+
         // Create a message extrinsic
-        const transferExtrinsic = await api.message.send(message, metadata);
+        // const transferExtrinsic = await api.message.send(message, metadata);
   
-        const injector = await web3FromSource(accounts[0].meta.source);
+        // const injector = await web3FromSource(accounts[0].meta.source);
   
-        transferExtrinsic
-          .signAndSend(
-            account?.address ?? alert.error("No account"),
-            { signer: injector.signer },
-            ({ status }) => {
-              if (status.isInBlock) {
-                alert.success(status.asInBlock.toString());
-              } else {
-                console.log("-")
-                if (status.type === "Finalized") {
-                  alert.success(status.type);
-                  window.location.reload();
-                }
-              }
-            }
-          )
-          .catch((error: any) => {
-            console.log(":( transaction failed", error);
-          });
+        // transferExtrinsic
+        //   .signAndSend(
+        //     account?.address ?? alert.error("No account"),
+        //     { signer: injector.signer },
+        //     ({ status }) => {
+        //       if (status.isInBlock) {
+        //         alert.success(status.asInBlock.toString());
+        //       } else {
+        //         console.log("-")
+        //         if (status.type === "Finalized") {
+        //           alert.success(status.type);
+        //           window.location.reload();
+        //         }
+        //       }
+        //     }
+        //   )
+        //   .catch((error: any) => {
+        //     console.log(":( transaction failed", error);
+        //   });
       } else {
         alert.error("Account not available to sign");
       }
   };
 
   const handleConfirm = () => {
-      // Aquí puedes hacer algo con los valores de los estados, como enviarlos a una API
       console.log('Username:', username);
       console.log('Twitter:', twitter);
 
       signer(username);
   };
 
+  const changeVariaty = (item: URLItem) => {
+    setSelectedItem(item);
+  };
+
   return (
       <>
           <Center>
-              <Heading as="h1" size="lg" color="yellow" mb="4" fontWeight="normal">
+              <Heading as="h1" size="lg" color="yellow" mb="4" fontWeight="normal" fontFamily={"Nasalization"}>
                   PERSONALIZED YOUR CYBER PROFILE.
               </Heading>
           </Center>
 
           <Flex h="65vh" mt={"10vh"}>
-            <Box w="35%" h="100%" overflowY={"auto"}>
+            <Box w="35%" h="100%" overflowY={"auto"} 
+              css={{
+                // Estilo de barra de desplazamiento para navegadores basados en Webkit
+                '&::-webkit-scrollbar': {
+                  width: '8px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  background: '#f1f1f1',
+                  borderRadius: '8px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: '#888',
+                  borderRadius: '8px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                  background: '#555',
+                },
+                // Estilo de barra de desplazamiento para Firefox
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#888 #f1f1f1',
+              }}
+            >
               {groupedUrls.map((group, index) => (
                 <Flex key={index} h="auto" flexWrap="wrap">
-                  {group.map(item => (
+                  {group.map(item => ( 
                     <Box
                       key={item.id}
                       flex="1 0 21%"  // flex-grow, flex-shrink, flex-basis
@@ -176,6 +264,7 @@ function InformationGeneral({id_nft,url_nft}:UrlProps) {
                         clipPath: 'polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px)'
                       }}
                       m="8px"
+                      onClick={() => changeVariaty(item)}
                       backgroundImage={`url(${item.url})`}
                       backgroundSize="cover"
                       backgroundRepeat="no-repeat"
@@ -187,11 +276,34 @@ function InformationGeneral({id_nft,url_nft}:UrlProps) {
                 </Flex>
               ))}
             </Box>
-            <Box w="35%" h="100%">
-              <img src={url_nft} alt={`Selected Profile ${id_nft}`} style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', maxHeight: '100%', clipPath: 'polygon(50px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px)'}} />
+            <Box w="40%" h="100%">
+              <img src={selectedItem.url} id="img_select" data-img_info={selectedItem.id} style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', maxHeight: '100%', clipPath: 'polygon(50px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px)'}} />
             </Box>
-            <Box w="30%" h="100%" borderRadius="md" mx="10px">
-              {/* Otro contenido */}
+            <Box w="25%" h="100%" borderRadius="md" mx="10px" background={"#18273F"}
+              sx={{
+                clipPath: 'polygon(50px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px)'
+              }}>
+              <Flex direction="column" align="center" justify="center" h="100%">
+                <img src={stadistics} alt="Stadistics" style={{ maxHeight: '75%' }} />
+                <Button
+                  mt="4vh"
+                  w="28vh"
+                  h="5vh"
+                  borderRadius="0"
+                  fontFamily={"Nasalization"}
+                  fontSize={"2xl"}
+                  backgroundColor="#f4f756"
+                  sx={{
+                    clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)',
+                    '&:hover': {
+                      backgroundColor: '#d456f7'
+                    }
+                  }}
+                  onClick={handleConfirm}
+                >
+                  CONFIRM
+                </Button>
+              </Flex>
             </Box>
           </Flex>
       </>

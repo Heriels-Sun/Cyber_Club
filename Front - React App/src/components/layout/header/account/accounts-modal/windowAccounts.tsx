@@ -3,6 +3,7 @@ import { useAccount } from '@gear-js/react-hooks';
 import type { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { LOCAL_STORAGE } from 'consts';
 import { Box, FormControl, FormLabel, Input, Button, Center, VStack, Heading, Flex, Select, Tooltip, Checkbox, Text, Spinner } from '@chakra-ui/react';
+import { SignlessForm } from 'components/SignlessForm/SignlessForm';
 
 type Props = {
   accounts: InjectedAccountWithMeta[] | undefined;
@@ -68,6 +69,10 @@ function WindowAccounts({ accounts }: Props) {
     }
   };
 
+  const goToTerms = () => {
+    window.open('/terms', '_blank', 'noopener,noreferrer');
+  };
+
   const noWalletFunction = () => {
     // Aquí puedes hacer algo con los valores de los estados, como enviarlos a una API
     console.log('Username:', username);
@@ -82,7 +87,7 @@ function WindowAccounts({ accounts }: Props) {
             <Box w="20%" mt="8vh">
                 <Center>
                   <VStack spacing={1}>
-                    <FormLabel color="yellow" textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} fontFamily={"Trebuchet MS"}>SIGN UP:</FormLabel><br/>
+                    <FormLabel color="yellow" textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} fontFamily={"Nasalization"}>SIGN UP:</FormLabel><br/>
                     <FormLabel color="white" textAlign={"center"} fontSize={"xl"} fontWeight={"bold"} fontFamily={"Trebuchet MS"}>Connect your wallet:</FormLabel>
                     <FormLabel color="white" textAlign={"justify"} fontSize={"lg"} fontFamily={"Trebuchet MS"}>
                       By connecting a wallet, you agree to Cyber Club: Terms of Service and acknowledge that you have read and unsterstand to Vara Network
@@ -129,7 +134,16 @@ function WindowAccounts({ accounts }: Props) {
 
                     <Box display={"flex"} mt="10px" alignItems="left" justifyContent="flex-start">
                       <Checkbox id="terms_checkbox" colorScheme="blue" isChecked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}/>
-                      <Text textAlign={"left"} ml={2} color={"white"}>I accept the terms and conditions of service</Text>
+                      <Box
+                        onClick={goToTerms}
+                        cursor="pointer"
+                        ml={2}
+                        display="inline-block"
+                      >
+                        <Text textAlign="left" color="white">
+                          I accept the terms and conditions of service
+                        </Text>
+                      </Box>
                     </Box>
 
                     <Button colorScheme="purplealpha.100" size="md" w="full" mt="5" backgroundColor="#f4f756" color={"black"} onClick={handleConfirm}>

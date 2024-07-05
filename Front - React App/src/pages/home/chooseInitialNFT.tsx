@@ -46,8 +46,12 @@ function chunkArray(array: URLItem[], chunkSize: number): URLItem[][] {
 }
 
 function ChooseInitialNFT({onSelectProfile}: ChooseInitialNFTProps) {
+    document.body.style.backgroundColor     = "";
+    document.body.style.backgroundImage     = "linear-gradient(to bottom, black 60%, #0E0E53 100%)";
+    document.body.style.backgroundRepeat    = "no-repeat";
+    document.body.style.backgroundSize      = "cover";
+
     let navigate = useNavigate();  // Obtén el hook useNavigate
-    document.body.style.backgroundImage = "";
 
     const handleBoxClick = (item: Item) => {
         navigate('/InformationGeneral', { state: { itemId: item.id, itemUrl: item.url } });
@@ -102,7 +106,7 @@ function ChooseInitialNFT({onSelectProfile}: ChooseInitialNFTProps) {
     return (
         <>
             <Center>
-                <Heading as="h1" size="lg" color="yellow" mb="4" fontWeight="normal">
+                <Heading as="h1" size="lg" color="yellow" mb="4" fontWeight="normal" fontFamily={"Nasalization"}>
                     CHOOSE YOUR CYBER PROFILE.
                 </Heading>
             </Center>
