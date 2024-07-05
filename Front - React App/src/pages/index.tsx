@@ -6,6 +6,7 @@ import { ChooseInitialNFT } from './home/chooseInitialNFT';
 import { InformationGeneral } from './home/informationGeneral';
 import { RegisterUser } from './home/registerUser';
 import { SelectActivity } from './home/selectActivity';
+import { Roads } from './Roads/Roads';
 
 const routes = [
   { path: '/', Page: Home },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/dashboard', Page: NewDashboard },
   { path: '/registeruser', Page: RegisterUser },
   { path: '/selectactivity', Page: SelectActivity },
+  { path: '/road', Page: Roads }
 ];
 
 function Routing() {

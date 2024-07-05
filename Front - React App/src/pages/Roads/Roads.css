@@ -1,0 +1,111 @@
+.game-roads-description {
+    /* outline: 2px solid green; */
+    display: flex;
+    width: 100%;
+    height: 75vh;
+}
+
+.game-roads-description__roads {
+    /* outline: 2px solid white; */
+    display: flex;
+    flex-direction: column;
+    background-image: url('/src/assets/images/map.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-position: bottom; */
+    flex: 5;
+}
+
+.game-roads-description__roads__names-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    gap: 25px;
+    background-color: rgba(0, 0, 0, 0.616);
+}
+
+.game-roads-description__roads__svgs {
+    /* border: solid 1px white; */
+    height: 100%;
+}
+
+.game-roads-description__roads__svgs-path {
+    height: 100%;
+    width: 100%;
+    /* outline: solid 1px green; */
+}
+
+.game-roads-description__description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-top: 30px;
+    gap: 30px;
+    flex: 2;
+}
+
+.game-roads-description__quit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    top: 30px;
+    right: 15px;
+    cursor: pointer;
+    position: absolute;
+    font-size: 25px;
+    background-color: #FF003C;
+    clip-path: polygon(18% 0%, 100% 0%, 100% 0%, 100% 81%, 84% 100%, 19% 100%, 0% 81%, 0% 15%);
+}
+
+.game-roads-description__description__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 630px;
+    width: 90%;
+    padding-top: 40px;
+    gap: 25px;
+    background-image: url('/src/assets/images/18Cyberclub-Place01.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.game-roads-description__description__card__title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 60px;
+    background-image: url("/src/assets/images/square_title_container.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.game-roads-description__description__card__title {
+    font-size: 24px;
+    color: white;
+}
+
+.game-roads-description__description__card__story {
+    width: 80%;
+    min-height: 20px;
+    padding: 20px;
+    font-weight:700;
+    background-color: rgba(255, 255, 255, 0.486);
+    clip-path: polygon(4% 0, 100% 0, 100% 94%, 96% 100%, 0 100%, 0 5%);
+}
+
+.game-roads-description__description__card-button-play {
+    display: flex;
+    justify-content: center;
+    height: 70px;
+    width: 300px;
+    text-align: center;
+    font-size: 30px;
+    background-color: yellow;
+    clip-path: polygon(0% 0%, 66.2% 0%, 95.4% 0%, 100% 17.5%, 100% 65.5%, 72.3% 65%, 67.2% 85%, 31.6% 85.5%, 25.7% 66.5%, 3.8% 65.5%, 0% 53%, 0% 17.5%);
+}

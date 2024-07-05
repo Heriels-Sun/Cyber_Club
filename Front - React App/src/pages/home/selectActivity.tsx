@@ -3,6 +3,7 @@ import { ProgramMetadata } from '@gear-js/api';
 import { web3FromSource } from "@polkadot/extension-dapp";
 import { useAccount, useApi, useAlert } from "@gear-js/react-hooks";
 import { Box, Text, Heading, Flex, Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 function SelectActivity() {
   document.body.style.backgroundImage             = "url('fondo02.png')";
@@ -12,6 +13,12 @@ function SelectActivity() {
   const { accounts, account } = useAccount();
   const { api } = useApi();
   const alert = useAlert();
+
+  const navigate = useNavigate();
+
+  const goToPaths = () => {
+    navigate('/road');
+  };
 
   return (
       <>
@@ -81,6 +88,7 @@ function SelectActivity() {
                 sx={{
                     clipPath: 'polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px)'
                   }}
+                onClick={goToPaths}
               >
                 START GAME
               </Button>

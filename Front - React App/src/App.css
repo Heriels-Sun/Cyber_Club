@@ -49,6 +49,8 @@ main {
 body {
   background: white;
   background-attachment: fixed;
+  /* background-size: cover; */
+  background-position: center;
   background-size: cover;
   /* animation: gradientAnimation 5s linear infinite; */
 }

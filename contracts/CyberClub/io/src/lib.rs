@@ -21,7 +21,7 @@ pub enum ContractStateQuery {
     SignlessAccountAddressForAddress(ActorId),
     SignlessAccountAddressForNoWalletAccount(NoWalletAccount),
     SignlessAccountData(ActorId),
-    ContractData(IoCyberState)
+    ContractData
 }
 
 #[derive(Encode, Decode, TypeInfo, Debug)]
@@ -39,11 +39,28 @@ pub enum CyberMessageIn {
     ModifyUserLevel(Level),
     ModifyUserModule(Module),
     ModifyUserPoints(u64),
-    FullRegisterUser(String),
+    FullRegisterUser{
+        username: String,
+        message_data: MessageData
+    },
     ModifyUserAttemps(u8),
     DeleteUser,
     // ============ PROGRESS =================
-    AddNewProgress(Level, Module, u8)
+    // AddNewProgress(Level, Module, u8)
+    AddNewProgress {
+        level_completed: Level,
+        module_completed: Module,
+        score_obtained: u8,
+        message_data: MessageData
+    },
+    BindSignlessDataToAddress {
+        user_address: ActorId,
+        signless_data: SignlessAccount
+    },
+    BindSignlessDataToNoWalletAccount {
+        no_wallet_account: String,
+        signless_data: SignlessAccount
+    },
 }
 
 #[derive(Encode, Decode, TypeInfo)]
@@ -58,7 +75,10 @@ pub enum CyberMessageOut {
     UserAttempsmodified,
     UserDeleted,
     // ============ GAMES =================
-    NewProgressAdded(bool)
+    NewProgressAdded(bool),
+    // ========== SIGNLESS ================
+    SignlessError(SignlessError),
+    SignlessAccountSet
 }
 
 #[derive(Default,Encode, Decode, TypeInfo, Debug)]

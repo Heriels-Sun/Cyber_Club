@@ -1,6 +1,7 @@
 
 #![no_std]
 use io::*;
+use signless::ContractSignlessAccounts;
 use gstd::{debug, msg, prelude::*,ActorId};
 use hashbrown::HashMap;
 
@@ -10,7 +11,8 @@ static mut STATE: Option<CyberState> = None;
 #[derive(Clone, Default, Debug)]
 pub struct CyberState {
     pub players: HashMap<ActorId,CyberPlayer>,
-    pub sponsors: HashMap<ActorId,CyberSponsors>
+    pub sponsors: HashMap<ActorId,CyberSponsors>,
+    pub signless_data: ContractSignlessAccounts
 }
 
 #[no_mangle]
@@ -33,44 +35,83 @@ extern "C" fn handle() {
         // --------------------------- USER MESSAGES INIT ---------------------
         CyberMessageIn::AddNewUser => {
             let my_mut_state = state_mut();
-       
-           my_mut_state.players
-            .entry(msg::source())
-            .or_insert(
-                CyberPlayer {
-                    name:            "".to_string(),
-                    points:          0,
-                    current_level:   Level::Begginer,
-                    current_module:  Module::First,
-                    full_registered: false,
-                    stadistics:      Vec::new(),
-                    try_for_day:     3,
-        });
+            
+            my_mut_state.players
+                .entry(msg::source())
+                .or_insert(
+                    CyberPlayer {
+                        name:            "".to_string(),
+                        points:          0,
+                        current_level:   Level::Begginer,
+                        current_module:  Module::First,
+                        full_registered: false,
+                        stadistics:      Vec::new(),
+                        try_for_day:     3,
+                    }
+                );
+
             msg::reply(CyberMessageOut::UserCreated, 0)
                 .expect("Error adding the user");
             debug!("The struct is : {:?}", my_mut_state);
         }
-        CyberMessageIn::FullRegisterUser(username) => {
-          
-           let my_mut_state = state_mut();
-       
-           my_mut_state.players
-           .entry(msg::source())
-           .and_modify(|player| {
-                player.name = username.to_string();
-                player.full_registered = true;
-              
-           })
-           .or_insert(
-            CyberPlayer {
-                name:            username.to_string(),
-                points:          0,
-                current_level:   Level::Begginer,
-                current_module:  Module::First,
-                full_registered: true,
-                stadistics:      Vec::new(),
-                try_for_day:     3,
-           });
+        CyberMessageIn::FullRegisterUser {
+            username,
+            message_data
+        } => { // TODO
+            let my_mut_state = state_mut();
+
+            let (user_address, no_wallet) = message_data;
+
+            let caller = msg::source();
+
+            let addres_to_use;
+
+            if user_address.is_some() {
+                addres_to_use = match my_mut_state.signless_data.get_user_address(caller, user_address) {
+                    Ok(address) => address,
+                    Err(error_message) => {
+                        
+                        msg::reply(CyberMessageOut::SignlessError(error_message), 0)
+                            .expect("error sending reply");
+                        return;
+                    }
+                };
+            } else if let Some(no_wallet_account) = no_wallet {
+                if let Err(error_message) = my_mut_state
+                    .signless_data
+                    .check_signless_address_by_no_wallet_account(
+                        caller, 
+                        no_wallet_account
+                ) {
+                    msg::reply(CyberMessageOut::SignlessError(error_message), 0)
+                        .expect("error sending reply");
+                    return;
+                }
+
+                addres_to_use = caller;
+            } else {
+                addres_to_use = caller;
+            }
+
+            my_mut_state.players
+                // .entry(msg::source())
+                .entry(addres_to_use)
+                .and_modify(|player| {
+                        player.name = username.to_string();
+                        player.full_registered = true;
+                    
+                })
+                .or_insert(
+                    CyberPlayer {
+                        name:            username.to_string(),
+                        points:          0,
+                        current_level:   Level::Begginer,
+                        current_module:  Module::First,
+                        full_registered: true,
+                        stadistics:      Vec::new(),
+                        try_for_day:     3,
+                    }
+                );
           
             msg::reply(CyberMessageOut::UsernameModified, 0)
                 .expect("Error modifing the username");
@@ -185,27 +226,69 @@ extern "C" fn handle() {
 
         }
         // --------------------------- USER MESSAGES END ---------------------
-        CyberMessageIn::AddNewProgress(level_completed, module_completed, score_obtained) => {
-
+        CyberMessageIn::AddNewProgress {  // (level_completed, module_completed, score_obtained) => { // TODO
+            level_completed,
+            module_completed,
+            score_obtained,
+            message_data
+        } => {
             let my_mut_state = state_mut();
-            my_mut_state.players
-            .entry(msg::source())
-            .and_modify(|player| {
-                if player.try_for_day != 0 {
-                    player.try_for_day -= 1;
-                    if player.current_level != level_completed.clone() {
-                        player.current_level = level_completed.clone();
+
+
+            let (user_address, no_wallet) = message_data;
+
+            let caller = msg::source();
+
+            let addres_to_use;
+
+            if user_address.is_some() {
+                addres_to_use = match my_mut_state.signless_data.get_user_address(caller, user_address) {
+                    Ok(address) => address,
+                    Err(error_message) => {
+                        
+                        msg::reply(CyberMessageOut::SignlessError(error_message), 0)
+                            .expect("error sending reply");
+                        return;
                     }
-                    player.current_module = module_completed.clone();
-                    player.stadistics.push(CyberStadistics { level: level_completed.clone(), module: module_completed.clone(), score: score_obtained.clone() });
-                    add_user_points(player, score_obtained.into());
+                };
+            } else if let Some(no_wallet_account) = no_wallet {
+                if let Err(error_message) = my_mut_state
+                    .signless_data
+                    .check_signless_address_by_no_wallet_account(
+                        caller, 
+                        no_wallet_account
+                ) {
+                    msg::reply(CyberMessageOut::SignlessError(error_message), 0)
+                        .expect("error sending reply");
+                    return;
                 }
-            })
-            .or_insert(
-             CyberPlayer {
-                stadistics : vec![CyberStadistics { level: level_completed, module: module_completed, score: score_obtained }],
-                    ..Default::default()
-            });
+
+                addres_to_use = caller;
+            } else {
+                addres_to_use = caller;
+            }
+
+
+            my_mut_state.players
+                // .entry(msg::source())
+                .entry(addres_to_use)
+                .and_modify(|player| {
+                    if player.try_for_day != 0 {
+                        player.try_for_day -= 1;
+                        if player.current_level != level_completed.clone() {
+                            player.current_level = level_completed.clone();
+                        }
+                        player.current_module = module_completed.clone();
+                        player.stadistics.push(CyberStadistics { level: level_completed.clone(), module: module_completed.clone(), score: score_obtained.clone() });
+                        add_user_points(player, score_obtained.into());
+                    }
+                })
+                .or_insert(
+                CyberPlayer {
+                    stadistics : vec![CyberStadistics { level: level_completed, module: module_completed, score: score_obtained }],
+                        ..Default::default()
+                    }
+                );
            
             msg::reply(CyberMessageOut::NewProgressAdded(true), 0)
                 .expect("Error modifing the current user module");
@@ -220,6 +303,56 @@ extern "C" fn handle() {
             debug!("The struct is : {:?}", my_mut_state);
 
         },
+        CyberMessageIn::BindSignlessDataToAddress { 
+            user_address, 
+            signless_data 
+        } => {
+            let state = state_mut();
+
+            let signless_address = msg::source();
+
+            let result = state  
+                .signless_data
+                .set_signless_account_to_user_address(
+                    signless_address, 
+                    user_address, 
+                    signless_data
+                );
+            
+            let response = match result {
+                Err(signless_error) => CyberMessageOut::SignlessError(signless_error),
+                Ok(_) => CyberMessageOut::SignlessAccountSet
+            };
+
+            msg::reply(response, 0)
+                .expect("Error sending reply");
+            return;
+        },
+        CyberMessageIn::BindSignlessDataToNoWalletAccount { 
+            no_wallet_account, 
+            signless_data 
+        } => {
+            let state = state_mut();
+
+            let signless_address = msg::source();
+
+            let result = state
+                .signless_data
+                .set_signless_account_to_no_wallet_name(
+                    signless_address, 
+                    no_wallet_account, 
+                    signless_data
+                );
+
+            let response = match result {
+                Err(error_message) => CyberMessageOut::SignlessError(error_message),
+                Ok(_) => CyberMessageOut::SignlessAccountSet
+            };
+
+            msg::reply(response, 0)
+                .expect("Error sending reply");
+            return;
+        }
     }
 }
 
@@ -236,13 +369,64 @@ fn state_mut() -> &'static mut CyberState { // This function give us the mut sta
 }
 // =========================================================================================
 
+// ================================= TAKE STATE ============================================
+fn take_state() -> CyberState {
+    let state = unsafe { STATE.take() };
+    debug_assert!(state.is_some(), "State is not initialized");
+    unsafe { state.unwrap_unchecked() }
+}
+
 // =============================== STATE ==============================================
 // 5. Create the state() function of your contract.
 #[no_mangle]
 extern "C" fn state() {
-    let state = unsafe { STATE.take().expect("Unexpected error in taking state") };
-    msg::reply::<IoCyberState>(state.into(), 0)
-    .expect("Failed to encode or reply  from `state()`");
+    // let state = unsafe { STATE.take().expect("Unexpected error in taking state") };
+    // msg::reply::<IoCyberState>(state.into(), 0)
+    // .expect("Failed to encode or reply  from `state()`");
+
+    let message = msg::load()
+        .expect("Error loading message");
+
+    let state = take_state();
+
+    match message {
+        ContractStateQuery::ContractData => {
+            let temp: IoCyberState = state.into();
+            msg::reply(ContractStateReply::ContractData(temp), value)
+        },
+        ContractStateQuery::SignlessAccountAddressForAddress(user_address) => {
+            let signless_address = state   
+                .signless_data
+                .signless_accounts_address_by_user_address
+                .get(&user_address);
+
+            msg::reply(ChessStateReply::SignlessAccountAddress(signless_address.copied()), 0)
+                .expect("Error sending state");
+        },
+        ContractStateQuery::SignlessAccountAddressForNoWalletAccount(no_wallet_accound) => {
+            let signless_address = state
+                .signless_data
+                .signless_accounts_address_by_no_wallet_name
+                .get(&no_wallet_accound);
+
+            msg::reply(ChessStateReply::SignlessAccountAddress(signless_address.copied()), 0)
+                .expect("Error sending state");
+        },
+        ContractStateQuery::SignlessAccountData(signless_address) => {
+            let signless_data = state
+                .signless_data
+                .signless_data_by_signless_address
+                .get(&signless_address);
+
+            let response = match signless_data {
+                Some(data) => Some(data.clone()),
+                None => None
+            };
+
+            msg::reply(ChessStateReply::SignlessAccountData(response), 0)
+                .expect("Error sending state");
+        }
+    }
 }
 
 impl From<CyberState> for IoCyberState {
@@ -251,7 +435,8 @@ impl From<CyberState> for IoCyberState {
     let CyberState {
 
         players,
-        sponsors
+        sponsors,
+        ..
 
     } = value;
 
