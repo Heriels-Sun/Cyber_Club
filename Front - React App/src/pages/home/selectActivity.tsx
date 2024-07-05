@@ -5,7 +5,7 @@ import { useAccount, useApi, useAlert } from "@gear-js/react-hooks";
 import { Box, Text, Heading, Flex, Button } from '@chakra-ui/react';
 
 function SelectActivity() {
-  document.body.style.backgroundImage             = "url('fondo02.png')";
+  document.body.style.backgroundImage             = "url('fondo02.jpg')";
   document.body.style.backgroundAttachment        = "fixed";
   document.body.style.backgroundSize              = "cover";
 
