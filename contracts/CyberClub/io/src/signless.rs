@@ -4,7 +4,7 @@ use gstd::{
     ActorId
 };
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct ContractSignlessAccounts {
     pub signless_accounts_address_by_user_address: BTreeMap<ActorId, ActorId>,
     pub signless_accounts_address_by_no_wallet_name: BTreeMap<String, ActorId>,
