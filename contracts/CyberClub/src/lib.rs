@@ -392,7 +392,7 @@ extern "C" fn state() {
     match message {
         ContractStateQuery::ContractData => {
             let temp: IoCyberState = state.into();
-            msg::reply(ContractStateReply::ContractData(temp), value)
+            let _ = msg::reply(ContractStateReply::ContractData(temp), 0);
         },
         ContractStateQuery::SignlessAccountAddressForAddress(user_address) => {
             let signless_address = state   
@@ -400,7 +400,7 @@ extern "C" fn state() {
                 .signless_accounts_address_by_user_address
                 .get(&user_address);
 
-            msg::reply(ChessStateReply::SignlessAccountAddress(signless_address.copied()), 0)
+            msg::reply(ContractStateReply::SignlessAccountAddress(signless_address.copied()), 0)
                 .expect("Error sending state");
         },
         ContractStateQuery::SignlessAccountAddressForNoWalletAccount(no_wallet_accound) => {
@@ -409,7 +409,7 @@ extern "C" fn state() {
                 .signless_accounts_address_by_no_wallet_name
                 .get(&no_wallet_accound);
 
-            msg::reply(ChessStateReply::SignlessAccountAddress(signless_address.copied()), 0)
+            msg::reply(ContractStateReply::SignlessAccountAddress(signless_address.copied()), 0)
                 .expect("Error sending state");
         },
         ContractStateQuery::SignlessAccountData(signless_address) => {
@@ -423,7 +423,7 @@ extern "C" fn state() {
                 None => None
             };
 
-            msg::reply(ChessStateReply::SignlessAccountData(response), 0)
+            msg::reply(ContractStateReply::SignlessAccountData(response), 0)
                 .expect("Error sending state");
         }
     }
