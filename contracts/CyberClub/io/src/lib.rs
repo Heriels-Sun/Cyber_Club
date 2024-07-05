@@ -4,6 +4,32 @@ use gmeta::{InOut, Metadata};
 use gstd::{prelude::*, ActorId};
 use scale_info::TypeInfo;
 
+pub mod signless;
+use signless::{
+    ContractSignlessAccounts,
+    SignlessAccount,
+    SignlessError
+};
+
+pub type UserAddress = ActorId;
+pub type NoWalletAccount = String;
+
+pub type MessageData = (Option<UserAddress>, Option<NoWalletAccount>);
+
+#[derive(Encode, Decode, TypeInfo, Debug)]
+pub enum ContractStateQuery {
+    SignlessAccountAddressForAddress(ActorId),
+    SignlessAccountAddressForNoWalletAccount(NoWalletAccount),
+    SignlessAccountData(ActorId),
+    ContractData(IoCyberState)
+}
+
+#[derive(Encode, Decode, TypeInfo, Debug)]
+pub enum ContractStateReply {
+    SignlessAccountAddress(Option<ActorId>),
+    SignlessAccountData(Option<SignlessAccount>),
+    ContractData(IoCyberState)
+}
 
 #[derive(Encode, Decode, TypeInfo)]
 pub enum CyberMessageIn {
@@ -111,5 +137,5 @@ impl Metadata for ProgramMetadata {
 
     type Signal = ();
 
-    type State = IoCyberState;
+    type State = InOut<ContractStateQuery, ContractStateReply>;
 }
