@@ -12,6 +12,7 @@ parity-scale-codec = { version = "3", default-features = false }
 scale-info = { version = "2", default-features = false }
 hashbrown = "0.14"
 
+
 [build-dependencies]
 io = { path = "io" }
 gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", rev = "946ac47" }
