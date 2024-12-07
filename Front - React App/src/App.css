@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'Nasalization';
+  src: url('./assets/fonts/nasalization-rg.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelSplitter';
+  src: url('./assets/fonts/PixelSplitter.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.image-section {
+  background: rgba(0, 0, 0, 0);
+  flex: 1; /* Ocupa un tercio del espacio */
+  width: 100%;
+}
+
+/* Estilo para la sección de los botones */
+.button-section {
+  flex: 2; /* Ocupa el resto del espacio */
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  margin-top: -4%; /* Ajusta el margen superior para mover la sección hacia arriba */
+}
