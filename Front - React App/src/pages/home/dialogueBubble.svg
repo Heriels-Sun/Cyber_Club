@@ -1,9 +1,0 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 80 50"
-  width="80"
-  height="50"
->
-  <rect x="2" y="2" width="75" height="40" rx="10" ry="10" fill="#818089" stroke="#000000" strokeWidth="2"/> <!-- Reducido la altura del rectángulo -->
-  <path d="M 65 42 L 75 42 L 70 50 Z" fill="#818089" stroke="#000000" strokeWidth="2"/> <!-- Ajustado la cola para coincidir con el nuevo tamaño -->
-</svg>
