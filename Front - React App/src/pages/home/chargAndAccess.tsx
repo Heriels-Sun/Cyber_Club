@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useAccount } from "@gear-js/react-hooks";
 import { WindowAccounts } from "../../components/layout/header/account-info/accounts-modal/windowAccounts";
 import { Flex, Progress, Text } from '@chakra-ui/react';
